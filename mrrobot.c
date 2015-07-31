@@ -41,6 +41,11 @@ void bool detect_metal(int input)
 	}
 }
 
+/**
+ * Helpter function that returns a boolean depending on the input that indicates whether the robot has collided with something
+ * @param  input - intger type that stores a value from our target pin (this target pin will send information on whether we're blocked or not)
+ * @return       - boolean type: true if we're impeded, false otherwise 
+ */
 void bool detect_collision(int input) {
 	// conditional statement that defines collision detection 
 	if (/* condition */)
