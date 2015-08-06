@@ -47,9 +47,10 @@ bool detect_metal(int input)
  */
 bool detect_collision(int input) {
 	// conditional statement that defines collision detection 
-	if (/* condition */)
+	if (/* pin_Y > or < threshold */)
 	{
-		/* code */
+		// we hit something, switch activated: return true!
+		return true;
 	} 
 	else
 	{
@@ -57,17 +58,42 @@ bool detect_collision(int input) {
 	}
 }
 
+/**
+ * Helper function that returns nothing. When called, stops the robot from moving.
+ */
 void stop_moving() {
 	analogWrite(LMOTOR, STOP);
 	analogWrite(RMOTOR, STOP);
 }
 
+/**
+ * Helper function that returns nothing, when callsed starts the robot's movement.
+ */
+void start_moving() {
+	analogWrite(LMOTOR, MPOW);
+	analogWrite(RMOTOR, MPOW);
+}
+
+/**
+ * Helper function that returns nothing. When called, alerts via flashing LED lights and making noise.
+ */
 void alert_detection() {
 	// to alert make noise and flash LED lights 
 	int TIME_DELAY = 1000; 								// default to one second 
 	digitalWrite(GLED, HIGH);
 	digitalWrite(SOUND, HIGH);
 	delay(TIME_DELAY);
+}
+
+
+void turn() {
+	int random_angle = random(10)*1000;						// turn for random number of second s
+	int i = 0;
+	while (i < random_angle) 
+	{
+		analogWrite(RMOTOR, MPOW);
+		i++;
+	}
 }
 
 ////////////////// SETUP FUNCTION ///////////////////
@@ -84,17 +110,7 @@ void setup ()
 
 void loop () 
 {
-	// state 0 (default) move straight by turning motors
-	analogWrite(LMOTOR, MPOW);
-	analogWrite(RMOTOR, MPOW);
 	 
-	// state 1	(collision case) happens when a collision is detected - action: calculate and store random angle 
-	if (detect_collision(/* input coming from pin_Y */))
-	{
-		// STOP moving and beep 
-		stop_moving();
-	}
-
 	// state 2	(detected metal) happens when metal is detected - action: stop, blink, and make sounds 
 	if (detect_metal(/* pass in input from pin_X */))
 	{	
@@ -105,6 +121,17 @@ void loop ()
 		alert_detection();
 	}
 
-	// state 3	(respond to collision) happens after a collision is detected - action: adjust our angle until no collision is detected 
+	
+	// state 1	(collision case) happens when a collision is detected - action: calculate and store random angle 
+	if (detect_collision(/* input coming from pin_Y */))
+	{
+		// go to state 3 
+		stop_moving();
+		turn();
+	}
+
+
+	// state 0 (default) move straight by turning motors
+	start_moving();
 
 }
