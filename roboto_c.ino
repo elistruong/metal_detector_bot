@@ -3,10 +3,7 @@
  * @author: Steven Truong and Christoph Sachse
  */
 
-
-////////////////// INSTANCE VARIABLES ///////////////
-
-
+////////////////// INSTANCE VARIABLES ///////////////////
 int METALPIN = 13;              // pin that indicates metal detection 
 int COLLPIN = 14;             // pin that indicates collision 
 int METALTHRESH = 5;            // threshold that determines metal detection
@@ -25,9 +22,7 @@ int RMOTOR = P2_1;              // pin of the right motor
 int DISTANCE;						// keeps track of how far we've moved 
 int state=0;            // initial state machine is in (moves forward)
 
-
 ////////////////// HELPER METHODS ///////////////////
-
 
 /**
  * Helper function that returns a boolean depending on the input that indicates whether metal is being detected or not 
@@ -96,7 +91,6 @@ void setup() {
 void loop () 
 {
   if(state==0){
-    // state 2	(detected metal) happens when metal is detected - action: stop, blink, and make sounds 
     analogWrite(LMOTOR, MPOW);
     analogWrite(RMOTOR, MPOW);
     if (detect_metal()){
@@ -112,6 +106,7 @@ void loop ()
     turn();
     state=0;  
   } else if (state==2){
+     // state 2	(detected metal) happens when metal is detected - action: stop, blink, and make sounds 
       //stop moving
       analogWrite(LMOTOR, STOP);
       analogWrite(RMOTOR, STOP);
@@ -127,5 +122,5 @@ void loop ()
           state=0;
         }
       }
-  }
+    }
 }
